@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SchoolModelEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="SchoolModelEntitiesStoreContainer">
+    <EntitySet Name="StudentsSet" EntityType="SchoolModelEntities.Store.StudentsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GendersSet" EntityType="SchoolModelEntities.Store.GendersSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="GendersStudents" Association="SchoolModelEntities.Store.GendersStudents">
+      <End Role="Genders" EntitySet="GendersSet" />
+      <End Role="Students" EntitySet="StudentsSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="StudentsSet">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Genders_GenderID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GendersSet">
+    <Key>
+      <PropertyRef Name="GenderID" />
+    </Key>
+    <Property Name="GenderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GenderName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="GendersStudents">
+    <End Role="Genders" Type="SchoolModelEntities.Store.GendersSet" Multiplicity="1" />
+    <End Role="Students" Type="SchoolModelEntities.Store.StudentsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Genders">
+        <PropertyRef Name="GenderID" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="Genders_GenderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="SchoolModelEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="SchoolModelEntitiesContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="StudentsSet" EntityType="SchoolModelEntities.Students" />
+          <EntitySet Name="GendersSet" EntityType="SchoolModelEntities.Genders" />
+          <AssociationSet Name="GendersStudents" Association="SchoolModelEntities.GendersStudents">
+            <End Role="Genders" EntitySet="GendersSet" />
+            <End Role="Students" EntitySet="StudentsSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="Phone" Type="String" Nullable="false" />
+          <NavigationProperty Name="Genders" Relationship="SchoolModelEntities.GendersStudents" FromRole="Students" ToRole="Genders" />
+        </EntityType>
+        <EntityType Name="Genders">
+          <Key>
+            <PropertyRef Name="GenderID" />
+          </Key>
+          <Property Name="GenderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenderName" Type="String" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="SchoolModelEntities.GendersStudents" FromRole="Genders" ToRole="Students" />
+        </EntityType>
+        <Association Name="GendersStudents">
+          <End Type="SchoolModelEntities.Genders" Role="Genders" Multiplicity="1" />
+          <End Type="SchoolModelEntities.Students" Role="Students" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SchoolModelEntitiesStoreContainer" CdmEntityContainer="SchoolModelEntitiesContainer">
+    <EntitySetMapping Name="StudentsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(SchoolModelEntities.Students)">
+        <MappingFragment StoreEntitySet="StudentsSet">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GendersSet">
+      <EntityTypeMapping TypeName="IsTypeOf(SchoolModelEntities.Genders)">
+        <MappingFragment StoreEntitySet="GendersSet">
+          <ScalarProperty Name="GenderID" ColumnName="GenderID" />
+          <ScalarProperty Name="GenderName" ColumnName="GenderName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="GendersStudents" TypeName="SchoolModelEntities.GendersStudents" StoreEntitySet="StudentsSet">
+      <EndProperty Name="Genders">
+        <ScalarProperty Name="GenderID" ColumnName="Genders_GenderID" />
+      </EndProperty>
+      <EndProperty Name="Students">
+        <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
